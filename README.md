@@ -13,14 +13,21 @@ J’accorde une attention particulière à l’architecture logicielle, à la qu
 ### Backend
 - Python (Advanced)
 - Django (Advanced)
+- FastAPI (Intermediate)
+- REST APIs (Intermediate)
+- Git (Advanced)
 
 ### AI & Data
 - LangChain (Intermediate)
-- RAG (Retrieval-Augmented Generation)
+- RAG (Retrieval-Augmented Generation) (Intermediate)
 - PostgreSQL (Intermediate)
+- scikit-learn (Intermediate)
+- Pandas (Intermediate)
 
 ### DevOps & Outils
 - Docker (Intermediate)
+- GitHub Actions (Beginner)
+- Linux (Intermediate)
 
 ---
 
