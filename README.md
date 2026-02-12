@@ -1,30 +1,50 @@
-# **👋 Salut, je suis [Ton Prénom Nom]**
-**Étudiant en Architecture Logicielle | Développeur Django, RAG LangChain & ML**
+# Alexandre Crestien
 
-Passionné par la conception de solutions logicielles robustes et innovantes. Je travaille sur des projets impliquant des architectures backend, des systèmes de **Retrieval-Augmented Generation (RAG)** avec LangChain, et des modèles de **Machine Learning**.
+**En formation Simplon – Dev IA | Python • Django • RAG (LangChain) • Data**
 
----
-
-## **🚀 Mes Projets**
-
-### **🔹 Django**
-- **Projet 1** : [Nom du projet](lien_vers_le_projet) – Description courte et percutante.
-- **Projet 2** : [Nom du projet](lien_vers_le_projet) – Description courte et percutante.
-
-### **🔹 RAG & LangChain**
-- **Projet 1** : [Nom du projet](lien_vers_le_projet) – Description courte et percutante.
-- **Projet 2** : [Nom du projet](lien_vers_le_projet) – Description courte et percutante.
-
-### **🔹 Machine Learning**
-- **Projet 1** : [Nom du projet](lien_vers_le_projet) – Description courte et percutante.
-- **Projet 2** : [Nom du projet](lien_vers_le_projet) – Description courte et percutante.
+Je me forme au développement IA chez Simplon avec une approche orientée produit : concevoir des applications utiles, maintenables et bien structurées.
+Je travaille principalement en Python, autour de Django pour le web, et j’explore les assistants IA (RAG / LangChain) pour la recherche d’information et l’automatisation.
+J’accorde une attention particulière à l’architecture logicielle, à la qualité du code et à l’expérience utilisateur (du POC à une application plus « pro »).
 
 ---
 
-## **📫 Contact**
-- **GitHub** : [@ton_pseudo](https://github.com/ton_pseudo)
-- **LinkedIn** : [Ton Prénom Nom](lien_vers_linkedin)
-- **Email** : ton.email@example.com
+## 🛠 Tech Stack
+
+### Backend
+- Python (Advanced)
+- Django (Advanced)
+
+### AI & Data
+- LangChain (Intermediate)
+- RAG (Retrieval-Augmented Generation)
+- PostgreSQL (Intermediate)
+
+### DevOps & Outils
+- Docker (Intermediate)
 
 ---
-*✨ "Le logiciel, c'est comme l'architecture : ça doit être solide, scalable et élégant."* ✨
+
+## 🚀 Projets
+
+### Simulation Wa-Tor (prédateur-proie)
+*Simulation OOP d’écosystème (poissons / requins) avec règles de reproduction et prédation.*
+**Stack** : Python, OOP
+
+### Application Django – Prédiction de charges d’assurance
+*Application web qui utilise un modèle ML existant pour estimer les charges, avec parcours utilisateur complet.*
+**Stack** : Python, Django, scikit-learn
+
+### Assistant RAG (LangChain) – Recherche dans documents internes
+*Assistant IA qui retrouve des procédures et résolutions d’incidents via recherche vectorielle.*
+**Stack** : Python, LangChain, RAG, ChromaDB, Mistral
+
+### Générateur README GitHub (Agent)
+*Agent IA qui génère et met à jour automatiquement un README puis pousse sur GitHub via gh.*
+**Stack** : Python, LangChain/DeepAgents, GitHub CLI (gh)
+
+---
+
+## 📫 Contact
+- [GitHub](https://github.com/AlexandreCrestien)
+- [LinkedIn](https://linkedin.com/in/alexandre-crestien/)
+- [Email](mailto:alexandre.crestien@gmail.com)
