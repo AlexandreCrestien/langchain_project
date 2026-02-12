@@ -1,5 +1,3 @@
-Here is the final Markdown for your project's README:
-
 ```markdown
 # README Agent - Automatisation de Génération de README
 
@@ -11,11 +9,10 @@ Here is the final Markdown for your project's README:
 
 ## 📌 Description
 
-Ce projet est une application **Streamlit** qui automatise la génération et la maintenance de fichiers **README** pour des projets GitHub ou des profils GitHub. Il utilise des **agents IA** (via LangChain et Mistral) pour analyser le repository ou une base de données SQLite, et produire un README structuré et à jour.
-
-L'application permet de :
-- **Générer un README** à partir des fichiers du repository ou d'une base de données de profil.
-- **Modifier incrémentalement** un README existant via une interface de chat.
+Ce projet est une **application Streamlit** qui automatise la génération et la maintenance de fichiers **README** pour des projets GitHub ou des profils GitHub. Il utilise des **agents IA** (via LangChain et Mistral) pour :
+- **Analyser un repository** (fichiers, structure, dépendances).
+- **Générer un README structuré** à partir des données extraites.
+- **Modifier un README existant** via une interface de chat interactive.
 - **Écrire et pousser** le README généré directement sur GitHub.
 
 ---
@@ -26,8 +23,8 @@ L'application permet de :
 |-----------------|------------------------------------------------------------------------------|
 | **Backend**     | Python, LangChain, Mistral AI, SQLite                                        |
 | **Frontend**    | Streamlit                                                                    |
-| **Outils**      | GitHub CLI (`gh`), `python-dotenv`, `chromadb` (pour extensions futures)     |
-| **Déploiement** | Docker (optionnel), GitHub Actions (optionnel)                               |
+| **Outils**      | GitHub CLI (`gh`), `python-dotenv`                                           |
+| **Sécurité**    | Protection contre les traversées de chemin, outils read-only pour les agents |
 
 ---
 
@@ -36,9 +33,9 @@ L'application permet de :
 ```plaintext
 .
 ├── app/
-│   └── Home.py                  # Point d'entrée Streamlit
+│   └── Home.py                  # Point d'entrée Streamlit (interface utilisateur)
 ├── data/
-│   └── cv.sqlite3               # Base de données SQLite (profil, projets, skills)
+│   └── cv.sqlite3               # Base de données SQLite (profil, projets, compétences)
 ├── scripts/
 │   ├── init_db.py               # Initialisation de la base de données
 │   └── seed_db.py               # Peuplement initial de la base de données
@@ -50,7 +47,7 @@ L'application permet de :
 │   │   ├── messages.py          # Gestion des messages du chat
 │   │   ├── prompts.py           # Prompts système pour les agents
 │   │   └── state.py             # Gestion de l'état Streamlit
-│   ├── config.py                # Configuration (clés API)
+│   ├── config.py                # Configuration (clés API, chemins)
 │   ├── router_chain.py          # Routage automatique entre profil et repository
 │   ├── tools_db.py              # Outils pour interroger la base de données
 │   ├── tools_github.py          # Outils pour écrire/commiter/pusher le README
@@ -60,12 +57,11 @@ L'application permet de :
 │   │   └── sidebar.py           # Barre latérale (contrôles)
 │   └── utils/
 │       └── paths.py             # Gestion des chemins du projet
-├── skills/                      # Compétences personnalisées pour les agents
-│   └── github_readme/
-│       ├── SKILL.md
-│       ├── repo_readme.md
-│       └── templates/
-│           └── readme_main.md
+├── skills/
+│   └── github_readme/           # Compétences personnalisées pour les agents
+│       ├── SKILL.md             # Documentation de la compétence
+│       ├── repo_readme.md       # Stratégie pour générer un README de projet
+│       └── templates/           # Modèles de README
 ├── .env                         # Variables d'environnement (ex: MISTRAL_API_KEY)
 ├── .env.exemple                 # Exemple de fichier .env
 ├── .gitignore                   # Fichiers ignorés par Git
@@ -140,7 +136,7 @@ L'application permet de :
 ## 📝 Exemples d'Utilisation
 
 ### 1. Générer un README de Profil
-- **Demande** : *"Génère un README pour mon profil GitHub avec mes projets et mes skills."*
+- **Demande** : *"Génère un README pour mon profil GitHub avec mes projets et mes compétences."*
 - **Résultat** : Un README basé sur les données de la base SQLite (`profile`, `projects`, `skills`).
 
 ### 2. Générer un README de Projet
@@ -153,31 +149,22 @@ L'application permet de :
 
 ---
 
-## 🔧 Configuration de la Base de Données
-
-La base de données SQLite (`data/cv.sqlite3`) contient les tables suivantes :
-- `profile` : Informations personnelles (nom, headline, description, etc.).
-- `link` : Liens (GitHub, LinkedIn, email, etc.).
-- `skill` : Compétences (nom, catégorie, niveau).
-- `project` : Projets (nom, description, stack, URL GitHub).
-
-Pour modifier les données :
-1. Utilisez `scripts/seed_db.py` pour peupler la base.
-2. Modifiez directement le fichier `seed_db.py` pour ajouter/supprimer des entrées.
-
----
-
 ## 🤖 Agents IA
 
-### 1. **Agent Profil**
-- **Rôle** : Génère un README de profil à partir des données SQLite.
-- **Outils** : `get_profile_data()`.
-- **Prompt** : Défini dans `src/chat/prompts.py` (`SYSTEM_RULES`).
-
-### 2. **Agent Repository**
+### 1. **Agent Repository**
 - **Rôle** : Génère un README de projet à partir des fichiers du repository.
 - **Outils** : `list_repo_tree()`, `read_text_file()`.
-- **Prompt** : Défini dans `src/chat/prompts.py` (`SYSTEM_RULES_REPO`).
+- **Stratégie** :
+  - Liste les fichiers du repository.
+  - Lit les fichiers clés (`README.md`, `requirements.txt`, `Dockerfile`, etc.).
+  - Déduit la stack technique, les commandes d'installation, et la structure du projet.
+
+### 2. **Agent Profil**
+- **Rôle** : Génère un README de profil à partir des données SQLite.
+- **Outils** : `get_profile_data()` (interrogation de la base de données).
+- **Stratégie** :
+  - Récupère les informations personnelles, compétences, projets et liens.
+  - Structure le README avec une introduction, une stack technique, et une liste de projets.
 
 ### 3. **Router**
 - **Rôle** : Détermine quel agent utiliser en fonction de la demande utilisateur.
@@ -188,8 +175,8 @@ Pour modifier les données :
 ## 📌 Roadmap
 - [ ] Ajouter la génération de **CV** et **lettres de motivation**.
 - [ ] Intégrer **GitHub Actions** pour automatiser les mises à jour du README.
-- [ ] Ajouter un **mode batch** pour générer plusieurs README en une seule fois.
 - [ ] Supporter d'autres formats (PDF, HTML) pour le README.
+- [ ] Ajouter un **mode batch** pour générer plusieurs README en une seule fois.
 
 ---
 
@@ -197,4 +184,3 @@ Pour modifier les données :
 Pour toute question ou suggestion, n'hésitez pas à ouvrir une **issue** ou à me contacter directement :
 - **GitHub** : [AlexandreCrestien](https://github.com/AlexandreCrestien)
 - **Email** : alexandre.crestien@gmail.com
-```
