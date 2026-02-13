@@ -1,64 +1,179 @@
+Voici le README final pour le projet **LangChain Agent – Générateur Automatique de README** :
+
 ```markdown
-# Alexandre Crestien
+# 📄 LangChain Agent – Générateur Automatique de README
 
-**En formation Simplon – Dev IA | Python • Django • RAG (LangChain) • Data**
-📍 Lille | ✉️ [alexandre.crestien@gmail.com](mailto:alexandre.crestien@gmail.com)
-
----
-
-## 🚀 À propos
-Je me forme au développement IA chez **Simplon** avec une approche orientée **produit** : concevoir des applications **utiles, maintenables et bien structurées**.
-
-Je travaille principalement en **Python**, autour de **Django** pour le web, et j’explore les **assistants IA (RAG / LangChain)** pour la recherche d’information et l’automatisation.
-
-J’accorde une attention particulière à :
-✅ **L’architecture logicielle**
-✅ **La qualité du code**
-✅ **L’expérience utilisateur** (du POC à une application plus *pro*)
+**Un agent IA pour générer et maintenir des README professionnels à partir du contenu d'un repository.**
 
 ---
 
-## 🔗 Liens
-- [GitHub](https://github.com/AlexandreCrestien)
-- [LinkedIn](https://www.linkedin.com/in/alexandre-crestien/)
-- [Email](mailto:alexandre.crestien@gmail.com)
+## 🎯 Description
+Ce projet utilise **LangChain** et **Mistral AI** pour créer un agent capable de :
+- **Analyser un repository** (fichiers, structure, dépendances).
+- **Générer un README clair et structuré** basé sur le contenu réel du projet.
+- **Maintenir automatiquement** le README à jour en fonction des modifications du code.
+
+L'agent est conçu pour être **intégré dans un workflow CI/CD** ou utilisé localement via une interface **Streamlit**.
 
 ---
 
-## 🛠️ Compétences
+## 🛠️ Stack Technique
 
-### Backend
-- **Python** (Avancé)
-- **Django** (Avancé)
+### **Backend & IA**
+- **Python** (3.10+)
+- **LangChain** (Agents, Tools, Runnables)
+- **LangGraph** (Orchestration des workflows)
+- **Mistral AI** (LLM pour la génération de contenu)
+- **DeepAgents** (Framework pour la création d'agents autonomes)
 
-### IA & Data
-- **LangChain** (Intermédiaire)
-- **RAG** (Recherche augmentée par génération)
-- **PostgreSQL** (Intermédiaire)
+### **Outils & Bibliothèques**
+- **SQLite** (Stockage des données de profil)
+- **ChromaDB** (Optionnel pour des fonctionnalités RAG avancées)
+- **Streamlit** (Interface utilisateur)
+- **GitHub CLI (`gh`)** (Intégration GitHub pour le push automatique)
+- **Docker** (Optionnel pour le déploiement)
 
-### DevOps & Outils
-- **Docker** (Intermédiaire)
+### **Développement & Qualité**
+- **Python-dotenv** (Gestion des variables d'environnement)
+- **Tests unitaires** (À compléter)
+- **Clean Code** (Architecture modulaire, séparation des responsabilités)
+
+---
+
+## 📂 Structure du Projet
+
+```
+langchain_project/
+├── .env                    # Variables d'environnement (ex: MISTRAL_API_KEY)
+├── .env.exemple            # Exemple de configuration
+├── .gitignore              # Fichiers ignorés par Git
+├── README.md               # Ce fichier (généré automatiquement)
+├── requirements.txt        # Dépendances Python
+├── app/
+│   └── Home.py             # Interface Streamlit (à compléter)
+├── data/
+│   └── cv.sqlite3          # Base de données SQLite pour les données de profil
+├── skills/
+│   └── github_readme/      # Templates et règles pour la génération de README
+│       ├── SKILL.md        # Documentation de la skill
+│       ├── readme_main.md  # Template pour le README de profil
+│       └── repo_readme.md  # Template pour le README de projet
+├── src/
+│   ├── agent_build.py      # Construction de l'agent pour le README de profil
+│   ├── agent_build_repo.py # Construction de l'agent pour le README de projet
+│   ├── config.py           # Configuration (chargement des variables d'environnement)
+│   ├── router_chain.py     # Routage des requêtes vers le bon agent
+│   ├── tools_db.py         # Outils pour interagir avec la base de données SQLite
+│   ├── tools_github.py     # Outils pour écrire et pousser le README sur GitHub
+│   └── tools_repo.py       # Outils pour analyser le repository (list_repo_tree, read_text_file)
+```
 
 ---
 
-## 📂 Projets
+## ⚙️ Installation
 
-### **Simulation Wa-Tor (prédateur-proie)**
-🔹 **Description** : Simulation OOP d’un écosystème (poissons / requins) avec règles de reproduction et prédation.
-🔹 **Stack** : Python, OOP
+### Prérequis
+- Python 3.10+
+- Git
+- Un compte Mistral AI (pour l'API)
 
-### **Application Django – Prédiction de charges d’assurance**
-🔹 **Description** : Application web utilisant un modèle ML pour estimer les charges d’assurance, avec un parcours utilisateur complet.
-🔹 **Stack** : Python, Django, scikit-learn
+### Étapes
+1. Cloner le repository :
+   ```bash
+   git clone https://github.com/AlexandreCrestien/langchain-project.git
+   cd langchain-project
+   ```
 
-### **Assistant RAG (LangChain) – Recherche dans documents internes**
-🔹 **Description** : Assistant IA qui retrouve des procédures et résolutions d’incidents via recherche vectorielle.
-🔹 **Stack** : Python, LangChain, RAG, ChromaDB, Mistral
+2. Installer les dépendances :
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-### **Générateur README GitHub (Agent)**
-🔹 **Description** : Agent IA qui génère et met à jour automatiquement un README puis pousse sur GitHub via `gh`.
-🔹 **Stack** : Python, LangChain/DeepAgents, GitHub CLI (`gh`)
+3. Configurer les variables d'environnement :
+   - Copier `.env.exemple` vers `.env` :
+     ```bash
+     cp .env.exemple .env
+     ```
+   - Ajouter votre clé API Mistral dans `.env` :
+     ```ini
+     MISTRAL_API_KEY=votre_clé_api
+     ```
+
+4. (Optionnel) Initialiser la base de données SQLite pour les données de profil :
+   ```bash
+   sqlite3 data/cv.sqlite3 < data/schema.sql
+   ```
 
 ---
-*✨ Ouvert aux collaborations et opportunités !*
+
+## 🚀 Usage
+
+### Générer un README pour un projet
+1. Lancer l'agent pour analyser le repository :
+   ```python
+   from src.router_chain import readme_auto_chain
+
+   user_request = "Génère un README pour ce projet."
+   result = readme_auto_chain.invoke({"user_request": user_request})
+   print(result)  # Affiche le Markdown du README généré
+   ```
+
+2. (Optionnel) Écrire et pousser le README sur GitHub :
+   ```python
+   from src.tools_github import write_readme, git_commit_push_readme
+
+   write_readme(result)  # Écrit le README dans le fichier README.md
+   git_commit_push_readme("Update README via agent")  # Commit et push
+   ```
+
+### Lancer l'interface Streamlit
+```bash
+streamlit run app/Home.py
+```
+
+---
+
+## 🔧 Configuration
+
+### Variables d'environnement
+| Variable          | Description                          | Exemple                     |
+|-------------------|--------------------------------------|-----------------------------|
+| `MISTRAL_API_KEY` | Clé API pour Mistral AI              | `mistral-1234567890abcdef`  |
+
+### Fichiers clés
+- **`requirements.txt`** : Liste des dépendances Python.
+- **`data/cv.sqlite3`** : Base de données SQLite pour les données de profil (optionnel).
+- **`skills/github_readme/`** : Templates et règles pour la génération de README.
+
+---
+
+## 🧪 Tests
+À compléter.
+*Exemple de commande pour lancer les tests (une fois implémentés) :*
+```bash
+pytest tests/
+```
+
+---
+
+## 📜 Licence
+À compléter.
+*Exemple : MIT, Apache 2.0, etc.*
+
+---
+
+## 🤝 Contribuer
+Les contributions sont les bienvenues ! Voici comment vous pouvez aider :
+1. Forker le projet.
+2. Créer une branche pour votre fonctionnalité (`git checkout -b feature/ma-fonctionnalité`).
+3. Committer vos modifications (`git commit -m "Ajout de ma fonctionnalité"`).
+4. Pusher la branche (`git push origin feature/ma-fonctionnalité`).
+5. Ouvrir une Pull Request.
+
+---
+
+## 📬 Contact
+- **GitHub** : [github.com/AlexandreCrestien](https://github.com/AlexandreCrestien)
+- **LinkedIn** : [linkedin.com/in/alexandre-crestien](https://www.linkedin.com/in/alexandre-crestien/)
+- **Email** : [alexandre.crestien@gmail.com](mailto:alexandre.crestien@gmail.com)
 ```
