@@ -1,19 +1,20 @@
-Voici le README final pour le projet **LangChain Agent – Générateur Automatique de README** :
+Voici le README final généré à partir du contenu du repository :
 
 ```markdown
 # 📄 LangChain Agent – Générateur Automatique de README
 
-**Un agent IA pour générer et maintenir des README professionnels à partir du contenu d'un repository.**
+**Un agent IA pour analyser un repository et générer un README professionnel et maintenable.**
 
 ---
 
 ## 🎯 Description
-Ce projet utilise **LangChain** et **Mistral AI** pour créer un agent capable de :
-- **Analyser un repository** (fichiers, structure, dépendances).
-- **Générer un README clair et structuré** basé sur le contenu réel du projet.
-- **Maintenir automatiquement** le README à jour en fonction des modifications du code.
+Ce projet utilise **LangChain**, **Mistral AI** et **LangGraph** pour créer un agent capable de :
+- **Analyser automatiquement** la structure et le contenu d'un repository.
+- **Générer un README structuré** basé sur les fichiers et dépendances réels du projet.
+- **Maintenir le README à jour** en fonction des modifications du code.
+- **S'intégrer dans un workflow CI/CD** ou être utilisé localement via une interface **Streamlit**.
 
-L'agent est conçu pour être **intégré dans un workflow CI/CD** ou utilisé localement via une interface **Streamlit**.
+L'agent exploite des outils comme **RAG (Retrieval-Augmented Generation)** pour extraire les informations pertinentes du repository et produire une documentation claire et précise.
 
 ---
 
@@ -27,153 +28,110 @@ L'agent est conçu pour être **intégré dans un workflow CI/CD** ou utilisé l
 - **DeepAgents** (Framework pour la création d'agents autonomes)
 
 ### **Outils & Bibliothèques**
-- **SQLite** (Stockage des données de profil)
+- **SQLite** (Stockage des données de profil) *[`src/tools_db.py`]*
 - **ChromaDB** (Optionnel pour des fonctionnalités RAG avancées)
 - **Streamlit** (Interface utilisateur)
 - **GitHub CLI (`gh`)** (Intégration GitHub pour le push automatique)
 - **Docker** (Optionnel pour le déploiement)
+- **Python-dotenv** (Gestion des variables d'environnement)
 
 ### **Développement & Qualité**
-- **Python-dotenv** (Gestion des variables d'environnement)
 - **Tests unitaires** (À compléter)
 - **Clean Code** (Architecture modulaire, séparation des responsabilités)
 
 ---
 
-## 📂 Structure du Projet
-
-```
-langchain_project/
-├── .env                    # Variables d'environnement (ex: MISTRAL_API_KEY)
-├── .env.exemple            # Exemple de configuration
-├── .gitignore              # Fichiers ignorés par Git
-├── README.md               # Ce fichier (généré automatiquement)
-├── requirements.txt        # Dépendances Python
-├── app/
-│   └── Home.py             # Interface Streamlit (à compléter)
-├── data/
-│   └── cv.sqlite3          # Base de données SQLite pour les données de profil
-├── skills/
-│   └── github_readme/      # Templates et règles pour la génération de README
-│       ├── SKILL.md        # Documentation de la skill
-│       ├── readme_main.md  # Template pour le README de profil
-│       └── repo_readme.md  # Template pour le README de projet
-├── src/
-│   ├── agent_build.py      # Construction de l'agent pour le README de profil
-│   ├── agent_build_repo.py # Construction de l'agent pour le README de projet
-│   ├── config.py           # Configuration (chargement des variables d'environnement)
-│   ├── router_chain.py     # Routage des requêtes vers le bon agent
-│   ├── tools_db.py         # Outils pour interagir avec la base de données SQLite
-│   ├── tools_github.py     # Outils pour écrire et pousser le README sur GitHub
-│   └── tools_repo.py       # Outils pour analyser le repository (list_repo_tree, read_text_file)
-```
-
----
-
-## ⚙️ Installation
+## 📦 Installation
 
 ### Prérequis
 - Python 3.10+
 - Git
-- Un compte Mistral AI (pour l'API)
+- Un compte **Mistral AI** (pour l'API)
 
 ### Étapes
 1. Cloner le repository :
    ```bash
-   git clone https://github.com/AlexandreCrestien/langchain-project.git
-   cd langchain-project
+   git clone <URL_DU_REPOSITORY>
+   cd langchain_project
    ```
 
 2. Installer les dépendances :
    ```bash
    pip install -r requirements.txt
    ```
+   *Dépendances principales : `deepagents`, `langchain`, `langgraph`, `langchain-mistralai`, `chromadb`, `streamlit`* *[`requirements.txt`]*
 
 3. Configurer les variables d'environnement :
-   - Copier `.env.exemple` vers `.env` :
-     ```bash
-     cp .env.exemple .env
+   ```bash
+   cp .env.exemple .env
+   ```
+   - Ajouter votre clé API Mistral AI dans le fichier `.env` :
      ```
-   - Ajouter votre clé API Mistral dans `.env` :
-     ```ini
      MISTRAL_API_KEY=votre_clé_api
      ```
 
-4. (Optionnel) Initialiser la base de données SQLite pour les données de profil :
-   ```bash
-   sqlite3 data/cv.sqlite3 < data/schema.sql
-   ```
+---
+
+## ▶️ Usage
+
+### Lancer l'agent en local
+```bash
+streamlit run src/app.py
+```
+*Une interface Streamlit s'ouvrira pour interagir avec l'agent.*
+
+### Générer un README
+1. L'agent analyse le repository via **RAG** pour extraire les informations pertinentes.
+2. Il génère un **README structuré** basé sur les fichiers et dépendances détectés.
+3. Le résultat est affiché et peut être sauvegardé dans un fichier `README.md`.
 
 ---
 
-## 🚀 Usage
-
-### Générer un README pour un projet
-1. Lancer l'agent pour analyser le repository :
-   ```python
-   from src.router_chain import readme_auto_chain
-
-   user_request = "Génère un README pour ce projet."
-   result = readme_auto_chain.invoke({"user_request": user_request})
-   print(result)  # Affiche le Markdown du README généré
-   ```
-
-2. (Optionnel) Écrire et pousser le README sur GitHub :
-   ```python
-   from src.tools_github import write_readme, git_commit_push_readme
-
-   write_readme(result)  # Écrit le README dans le fichier README.md
-   git_commit_push_readme("Update README via agent")  # Commit et push
-   ```
-
-### Lancer l'interface Streamlit
-```bash
-streamlit run app/Home.py
+## 📂 Structure du Projet
+```
+langchain_project/
+├── .env                    # Variables d'environnement (ex: MISTRAL_API_KEY)
+├── .env.exemple            # Exemple de configuration
+├── .gitignore              # Fichiers ignorés par Git
+├── README.md               # Fichier généré automatiquement
+├── requirements.txt        # Dépendances Python
+├── src/
+│   ├── app.py              # Interface Streamlit (À compléter)
+│   ├── tools_db.py         # Gestion de la base de données SQLite *[`src/tools_db.py`]*
+│   └── skills/             # Compétences spécialisées de l'agent (ex: génération de README)
+├── data/                   # Base de données SQLite (optionnel)
+└── tests/                  # Tests unitaires (À compléter)
 ```
 
 ---
 
 ## 🔧 Configuration
-
-### Variables d'environnement
-| Variable          | Description                          | Exemple                     |
-|-------------------|--------------------------------------|-----------------------------|
-| `MISTRAL_API_KEY` | Clé API pour Mistral AI              | `mistral-1234567890abcdef`  |
-
-### Fichiers clés
-- **`requirements.txt`** : Liste des dépendances Python.
-- **`data/cv.sqlite3`** : Base de données SQLite pour les données de profil (optionnel).
-- **`skills/github_readme/`** : Templates et règles pour la génération de README.
+- **Variables d'environnement** (fichier `.env`) :
+  - `MISTRAL_API_KEY` : Clé API pour Mistral AI.
+  - `REPO_ROOT` : Chemin racine du repository (optionnel, auto-détecté par défaut).
 
 ---
 
 ## 🧪 Tests
-À compléter.
-*Exemple de commande pour lancer les tests (une fois implémentés) :*
+*À compléter.*
+Exemple de commande pour lancer les tests :
 ```bash
 pytest tests/
 ```
 
 ---
 
-## 📜 Licence
-À compléter.
-*Exemple : MIT, Apache 2.0, etc.*
-
----
-
 ## 🤝 Contribuer
-Les contributions sont les bienvenues ! Voici comment vous pouvez aider :
-1. Forker le projet.
-2. Créer une branche pour votre fonctionnalité (`git checkout -b feature/ma-fonctionnalité`).
-3. Committer vos modifications (`git commit -m "Ajout de ma fonctionnalité"`).
-4. Pusher la branche (`git push origin feature/ma-fonctionnalité`).
-5. Ouvrir une Pull Request.
+Les contributions sont les bienvenues ! Pour proposer des améliorations :
+1. Forkez le projet.
+2. Créez une branche (`git checkout -b feature/ma-nouvelle-fonctionnalité`).
+3. Committez vos modifications (`git commit -m "Ajout d'une nouvelle fonctionnalité"`).
+4. Pushez la branche (`git push origin feature/ma-nouvelle-fonctionnalité`).
+5. Ouvrez une **Pull Request**.
 
 ---
 
-## 📬 Contact
-- **GitHub** : [github.com/AlexandreCrestien](https://github.com/AlexandreCrestien)
-- **LinkedIn** : [linkedin.com/in/alexandre-crestien](https://www.linkedin.com/in/alexandre-crestien/)
-- **Email** : [alexandre.crestien@gmail.com](mailto:alexandre.crestien@gmail.com)
+## 📜 Licence
+*À compléter.*
+*(Si un fichier `LICENSE` est présent dans le repository, son contenu sera intégré ici.)*
 ```
